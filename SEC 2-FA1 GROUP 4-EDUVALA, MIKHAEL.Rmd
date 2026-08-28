@@ -1,0 +1,79 @@
+---
+title: "SEC 2-FA1 GROUP1-EDUVALA, MIKHAEL"
+subtitle: "GITHUB"
+output: pdf_document
+date: "2026-08-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Write the skewness program, and use it to calculate the skewness coefficient of the four examination subjects in results.txt. Download results.txt (results.csv) Download results.csv). What can you say about these data?
+
+```{r}
+results <- read.csv("results.csv", header = TRUE)
+  
+skew <- function(x) {
+  xbar <- mean(x, na.rm = TRUE)
+  sum2 <- sum((x-xbar) ** 2, na.rm = TRUE)
+  sum3 <- sum((x-xbar) ** 3, na.rm = TRUE)
+  skew <- (sqrt(length(x))* sum3)/(sum2 ** (1.5))
+  return(skew)
+}
+
+pearson_skewness <- function(x){
+  meanx <- mean(x, na.rm = TRUE)
+  medianx <- median(x, na.rm = TRUE)
+  sdx <- sd(x, na.rm = TRUE)
+  
+  skew <- (3 * (meanx - medianx)) / sdx
+  return(skew)
+}
+
+skewness_results <- data.frame(
+  arch1 = c(skew(results$arch1) ,pearson_skewness(results$arch1)),
+  prog1 = c(skew(results$prog1) ,pearson_skewness(results$prog1)),
+  arch2 = c(skew(results$arch2) ,pearson_skewness(results$arch2)),
+  prog2 = c(skew(results$prog2) ,pearson_skewness(results$prog2))
+)
+
+rownames(skewness_results) <- c("Normal Skewness", "Pearson Skewness")
+
+print(skewness_results)
+```
+
+#### What can I say about these data?
+
+#### Both data given by Normal Skewness, and Pearson Skewness is close to each other. while there are minor decimal differences between the two, the skewness of both data are on the same operator. I think that both skewness have a reasonable approximation, Pearson's skewness is somewhat close to the normal skewness however, it is a little bit more extreme. For the class of 50 students of computing detailed in Exercise 1.1
+
+#### 2. For the class of 50 students of computing detailed in Exercise 1.1, use R to (a) form the stem-and-leaf display for each gender, and discuss the advantages of this representation compared to the traditional histogram; (b) construct a box-plot for each gender and discuss the findings.
+
+```{r}
+
+Females <- c(57,59, 78, 79, 60, 65, 68, 71, 75, 48, 51, 55, 56, 41, 43,
+44, 75, 78, 80, 81, 83, 83, 85)
+Males <- c(48, 49, 49, 30, 30, 31, 32, 35, 37, 41, 86, 42, 51, 53, 56,
+42, 44, 50, 51, 65, 67, 51, 56, 58, 64, 64, 75)
+
+print("Females First-Year Java Programming Examination")
+print(stem(Females))
+
+print("Males First-Year Java Programming Examination")
+print(stem(Males))
+```
+
+#### The stem and leaf provides representation of the data for each gender, it makes it easier to identify the spread, skewness and gaps. Compared to a traditional histogram, stem and leaf is much more advantageous most especiallty, for small to medium sized data. Histograms are much more effective when it comes to larger data as it provides a clearer visual of the distribution.
+
+# Construct a box-plot for each gender and discuss the findings.
+
+```{r}
+
+boxplot(Females, Males, names = c("Females", "Males"),
+        main = "First_Year Java Programming Examinaation Scoreso",
+        ylab = "Scores",
+        ylim = range(0,100),
+        col = c("pink", "lightblue"))
+```
+
+#### The box plot above shows that the Females performed better than the males in their java programming examination. Looking closely, the distribution on the females have a greater spread than the males who are much more closer to their median. In conclusion, Females have higher scores and Males have scores that are close to each other.
