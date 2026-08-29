@@ -1,5 +1,5 @@
 ---
-title: "SEC 2-FA1 GROUP1-EDUVALA, MIKHAEL"
+title: "SEC 2-FA1 GROUP4-EDUVALA, MIKHAEL"
 subtitle: "GITHUB"
 output: pdf_document
 date: "2026-08-28"
