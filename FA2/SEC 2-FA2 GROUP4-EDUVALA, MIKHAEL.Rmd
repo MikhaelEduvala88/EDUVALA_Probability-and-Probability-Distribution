@@ -1,0 +1,51 @@
+---
+title: "SEC 2-FA2 GROUP4-EDUVALA, MIKHAEL"                    
+subtitle: "GITHUB - Probability and Probability Distribution" 
+output: pdf_document                                          
+date: "2026-08-30"                                            
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 3. An experiment consists of rolling a die. Use R to simulate this experiment 600 times and obtain the relative frequency of each possible outcome. Hence, estimate the probability of getting each of 1, 2, 3, 4, 5, and 6.
+
+```{r}
+x <- c(1,2,3,4,5,6)
+
+experiment <- sample(x, 600, replace = TRUE)
+
+frequency <- table(experiment)
+print(frequency)
+
+bar <- barplot(frequency, names.arg = x, main = "Frequency of a Die rolling for 600 times",
+               xlab = "Outcomes", ylab = "Frequency", ylim = c(0,max(frequency)),col="#FFC300")
+
+text(bar, frequency, labels = frequency, cex = 1, pos = 1)
+
+```
+
+##Shown above is the frequency of a die getting 1,2,3,4,5,6 for 600 times
+
+## Relative Frequency:
+
+Here is the estimated probability of getting each 1,2,3,4,5,6 in a die.
+
+```{r}
+relative_frequency <- frequency / 600
+print(relative_frequency)
+
+pie(
+  relative_frequency,
+  labels = paste0(
+    names(relative_frequency),
+    " (", round(relative_frequency * 100, 1), "%)"
+  ),
+  main = "Relative Frequency of Die Rolls"
+)
+
+
+```
+
+##The Pie Chart above shows the relative frequency of getting 1,2,3,4,5,6 in a die rolling for 600 times
