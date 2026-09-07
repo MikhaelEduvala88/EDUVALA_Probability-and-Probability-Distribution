@@ -1,0 +1,68 @@
+---
+title: "SEC 2-FA4 GROUP4-EDUVALA, MIKHAEL; DE RAMOS, ANEEZA - FA4"                    
+subtitle: "GITHUB - "
+output: pdf_document                                          
+date: "2026-08-30"                                            
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## A binary communication channel carries data as one of two sets of signals denoted by 0 and 1. Owing to noise, a transmitted 0 is sometimes received as a 1, and a transmitted 1 is sometimes received as a 0. For a given channel, it can be assumed that a transmitted 0 is correctly received with probability 0.95, and a transmitted 1 is correctly received with probability 0.75. Also, 70% of all messages are transmitted as a 0. If a signal is sent, determine the probability that:
+
+### R = Received, T = Transmitted
+
+```{r}
+binary_comm <- data.frame(correct = c(0.95, 0.75), error = c(0.05, 0.25),
+                          sent = c(0.70, 0.30), row.names = 0:1)
+binary_comm
+```
+
+### (a) A 1 was received:
+
+$P(R = 1) = P(R = 1 | T = 0) \cdot P(T = 0) + P(R = 1 | T = 1) \cdot P(T = 1)$
+
+```{r}
+prob_get1 <- round((0.05 * 0.7 + .75 * 0.3), 4)
+cat(prob_get1 * 100, "%", sep = "")
+```
+
+### (b) A 1 was transmitted given then a 1 was received:
+
+$P(T = 1 | R = 1) = \frac{P(T = 1) \cdot P(R = 1 | T = 1)}{P(R = 1)}$
+
+```{r}
+prob_send1_get1 <- round(((0.3 * 0.75) / prob_get1), 4)
+cat(prob_send1_get1 * 100, "%", sep = "")
+```
+
+## 7. There are three employees working at an IT company: Jane, Amy, and Ava, doing 10%, 30%, and 60% of the programming, respectively. 8% of Jane’s work, 5% of Amy’s work, and just 1% of Ava‘s work is in error. What is the overall percentage of error? If a program is found with an error, who is the most likely person to have written it?
+
+```{r}
+## Given probabilities
+P_Jane <- 0.10
+P_Amy <- 0.30
+P_Ava <- 0.60
+
+## Probability that each employee's work contains an error
+P_Error_Jane <- 0.08
+P_Error_Amy <- 0.05
+P_Error_Ava <- 0.01
+
+## Calculate the overall probability of an error
+P_Error <- (P_Jane * P_Error_Jane) +
+           (P_Amy * P_Error_Amy) +
+           (P_Ava * P_Error_Ava)
+
+print(P_Error * 100)  # Overall percentage of errors
+
+## Calculate the probability that each employee wrote a program with an error
+P_Jane_Error <- (P_Jane * P_Error_Jane) / P_Error
+P_Amy_Error <- (P_Amy * P_Error_Amy) / P_Error
+P_Ava_Error <- (P_Ava * P_Error_Ava) / P_Error
+
+print(P_Jane_Error)  # Probability the error was made by Jane
+print(P_Amy_Error)   # Probability the error was made by Amy
+print(P_Ava_Error)   # Probability the error was made by Ava
+```
