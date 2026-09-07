@@ -1,0 +1,157 @@
+---
+title: "SEC 2-FA3 GROUP4-EDUVALA, MIKHAEL"                    
+subtitle: "GITHUB - "
+output: pdf_document                                          
+date: "2026-09-06"    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## A geospatial analysis system has four sensors supplying images. The percentage of images supplied by each sensor and the percentage of images relevant to a query are shown in the following table.
+
+```{r}
+images <- data.frame(sensor = 1:4, Supplied = c(0.15, 0.20, 0.25, 0.40), Relevant = c(0.50, 0.60, 0.80, 0.85))
+```
+
+## What is the overall percentage of relevant images?
+
+R = Relevant, S = Supplied
+
+$$ P(R) = P(R \vert S_1) \cdot P(S_1) + P(R \vert S_2) \cdot P(S_2) + P(R \vert S_3) \cdot P(S_3) + P(R\vert S_4)\cdot P(S_4) $$
+
+```{r}
+prob_rel <- sum(images$Supplied * images$Relevant)
+cat("The overall percentage of relevant images is ", prob_rel * 100, "%.", sep = "")
+```
+
+## 6.A fair coin is tossed twice. Let $E_1$ be the event that both tosses have the same outcome, that is $E_1 = (HH, TT)$. Let $E_2$ be the event that the first toss is a head, that is, $E_2 = (HH, HT)$. Let $E_3$ be the event that the second toss is a head, that it, $E_3 = (TH, HH)$. Show that $E_1, E_2, \text{and } E_3$ are pairwise independent but not mutually independent.
+
+## Sample Spaces
+
+$$S = {HH, HT, TH, TT}$$
+
+each outcome has an equal probability: $$P({HH}) = P({HT}) = P({TH}) = P({TT}) = \frac{1}{4}$$
+
+## Events and Their Probabilities
+
+1.  $E_1 = (HH, TT)$
+    - $P(E_1) = P(HH) + P(TT) = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$
+2.  $E_2 = (HH, HT)$
+    - $P(E_2) = P(HH) + P(HT) = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$
+3.  $E_3 = (TH, HH)$
+    - $P(E_3) = P(TH) + P(HH) = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$
+
+### There are 4 possible outcomes when a coin is tossed twice.
+
+```{r}
+sample <- c("HH","TT", "HT", "TH")
+
+E1 <- c("HH", "TT")
+E2 <- c("HH", "HT")
+E3 <- c("TH",  "HH")
+
+PE1 <- length(E1) / length(sample)
+PE2 <- length(E2) / length(sample)
+PE3 <- length(E3) / length(sample)
+
+PE1
+PE2
+PE3
+```
+
+## FIND THE INTERSECTION
+
+### Check if E1 and E2 are independent
+
+```{r}
+#### OUTCOMES THAT ARE IN BOTH E1 AND E2
+
+E1E2 <- intersect(E1, E2)
+
+#### PROBABILITY 
+
+PE1E2 <- length(E1E2) / length(sample)
+
+PE1xE2 <- PE1 * PE2
+
+E1E2
+
+PE1E2
+
+PE1xE2
+```
+
+## Check if E1 and E3 are independent
+
+```{r}
+#### OUTCOMES THAT ARE IN BOTH E1 AND E3
+
+E1E3 <- intersect(E1, E3)
+
+#### PROBABILITY 
+
+PE1E3 <- length(E1E2) / length(sample)
+
+PE1xE3 <- PE1 * PE2
+
+E1E3
+
+PE1E3
+
+PE1xE3
+```
+
+## Check if E2 and E3 are independent
+
+```{r}
+#### OUTCOMES THAT ARE IN BOTH E2 AND E3
+
+E2E3 <- intersect(E2, E3)
+
+#### PROBABILITY 
+
+PE2E3 <- length(E1E2) / length(sample)
+
+PE2xE3 <- PE1 * PE2
+
+E2E3
+
+PE2E3
+
+PE2xE3
+```
+
+## OR
+
+if $$P(A \cap B) = P(A) P(B)$$, then vents $A$ and $B$ are independent
+
+1.  $E_1 \text{ and } E_2 \newline E_1 \cap E_2 = \{HH\} \newline  P(E_1 \cap E_2) = P(HH) = \frac{1}{4} \newline P(E_1) P(E_2) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}\newline$ Since $P(E_1 \cap E_2) =  P(E_1) P(E_2)$, $E_1 \text{ and } E_2$ are independent.
+
+2.  $E_1 \text{ and } E_3 \newline E_1 \cap E_3 = \{HH\} \newline  P(E_1 \cap E_3) = P(HH) = \frac{1}{4} \newline P(E_1) P(E_3) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}\newline$ Since $P(E_1 \cap E_3) =  P(E_1) P(E_3)$, $E_1 \text{ and } E_3$ are independent.
+
+3.  $E_2 \text{ and } E_3 \newline E_2 \cap E_3 = \{HH\} \newline  P(E_2 \cap E_3) = P(HH) = \frac{1}{4} \newline P(E_2) P(E_3) = \frac{1}{2} \times \frac{1}{2} = \frac{1}{4}\newline$ Since $P(E_2 \cap E_3) =  P(E_2) P(E_3)$, $E_2 \text{ and } E_3$ are independent.
+
+## Mutual Independence
+
+```{r}
+all <- intersect(intersect(E1, E2), E3)
+p_all <- length(all) / length(sample)
+p_product <- PE1 * PE2 * PE3
+
+all
+p_all
+p_product
+
+```
+
+#### The Events Are Not Mutually Independent
+
+$E_1, E_2, \dotsc , E_k$ are mutually independent if: $$P(E_{i_1} \cap E_{i_2} \cap \dotsm \cap E_{i_k}) = P(E_{i_1})P(E_{i_2})\dotsm P(E_{i_k})$$
+
+From the sets: $\newline E_1 \cap E_2 \cap E_3 = \{HH\} \newline P(E_1 \cap E_2 \cap E_3) = P(HH) = \frac{1}{4}$
+
+Calculate $P(E_1)P(E_2)P(E_3)$: $\newline P(E_1)P(E_2)P(E_3) = \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}\newline$
+
+Since $P(E_1 \cap E_2 \cap E_3) \neq P(E_1)P(E_2)P(E_3)$, then the events are not mutually independent.
